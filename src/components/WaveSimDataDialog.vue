@@ -20,7 +20,7 @@
               <v-col cols="6" sm="6" md="6">
                 <v-text-field
                   label="파고(미터)"
-                  hint="파고 미터 단위 입력"
+                  :hint="`파고 데이타. ${default_values.waveHeightMin} 이상 ${default_values.waveHeightMax} 이하`"
                   v-model.number="tempItem.height"
                   type="number"
                   :rules="[rules.heightRule]"
@@ -30,7 +30,7 @@
               <v-col cols="6" sm="6" md="6">
                 <v-text-field
                   label="파주기(Hz)"
-                  hint="파주기 입력"
+                  :hint="`파주기 데이타. ${default_values.waveFrequencyMin} 이상 ${default_values.waveFrequencyMax} 이하`"
                   v-model.number="tempItem.frequency"
                   type="number"
                   :rules="[rules.frequencyRule]"
@@ -40,7 +40,7 @@
               <v-col cols="6" sm="6" md="6">
                 <v-text-field
                   label="파향(각도)"
-                  hint="파향 각도 입력"
+                  :hint="`파향 데이타. ${default_values.waveDirectionMin} 이상 ${default_values.waveDirectionMax} 미만`"
                   v-model.number="tempItem.direction"
                   type="number"
                   :rules="[rules.directionRule]"
@@ -50,7 +50,7 @@
               <v-col cols="6" sm="6" md="6">
                 <v-text-field
                   label="Duration(분)"
-                  hint="Duration 분단위 입력"
+                  :hint="`Duration 데이타. ${default_values.dataDurationMin} 이상 ${default_values.dataDurationMax} 이하. 0.1분 = 6초`"
                   v-model.number="tempItem.duration"
                   type="number"
                   :rules="[rules.durationRule]"
@@ -76,6 +76,9 @@
 </template>
 
 <script>
+import checkFloat from '@/utils/checkFloat'
+import default_values from '@/utils/default_values'
+
 export default {
   name: 'WaveSimDataDialog',
   props: {
@@ -94,6 +97,7 @@ export default {
   },
   data: () => ({
     inputValid: false,
+    default_values,
     defaultItem: {
       height: 0,
       frequency: 0,
@@ -108,52 +112,36 @@ export default {
     },
     rules: {
       heightRule: (value) => {
-        if(typeof(value) == 'string' && value ==='') {
-          return '파고 데이타 입력 필수'
-        }
-
-        if ((typeof(value) == 'string' && parseFloat(value) < 0) ||
-            (typeof(value) == 'number' && value < 0)) {
-          return '파고 데이타는 0 이상 이어야 함'
-        }
-
-        return true
+        return checkFloat(value, '파고 데이타', (v) => {
+          if( v < default_values.waveHeightMin || v > default_values.waveHeightMax) {
+            return `파고 데이타는 ${default_values.waveHeightMin} 이상 ${default_values.waveHeightMax} 이하 여야 함`
+          }
+          return true
+        })
       },
       frequencyRule: (value) => {
-        if(typeof(value) == 'string' && value ==='') {
-          return '파주기 데이타 입력 필수'
-        }
-
-        if ((typeof(value) == 'string' && parseFloat(value) < 0) ||
-            (typeof(value) == 'number' && value < 0)) {
-          return '파주기 데이타는 0 이상 이어야 함'
-        }
-
-        return true
+        return checkFloat(value, '파주기 데이타', (v) => {
+          if (v < default_values.waveFrequencyMin || v > default_values.waveFrequencyMax) {
+            return `파주기 데이타는 ${default_values.waveFrequencyMin} 이상 ${default_values.waveFrequencyMax} 이하 여야 함`
+          }
+          return true;
+        })
       },
       directionRule: (value) => {
-        if(typeof(value) == 'string' && value ==='') {
-          return '파향 데이타 입력 필수'
-        }
-
-        if ((typeof(value) == 'string' && (parseFloat(value) < 0 || parseFloat(value) >= 360)) ||
-            (typeof(value) == 'number' && (value < 0 || value >= 360))) {
-          return '파향 데이타는 0 이상 360 미만이어야 함'
-        }
-
-        return true
+        return checkFloat(value, '파향 데이타', (v) => {
+          if (v < default_values.waveDirectionMin || v >= default_values.waveDirectionMax) {
+            return `파향 데이타는 ${default_values.waveDirectionMin} 이상 ${default_values.waveDirectionMax} 미만 이어야 함`
+          }
+          return true;
+        })
       },
       durationRule: (value) => {
-        if(typeof(value) == 'string' && value ==='') {
-          return 'Duration 데이타 입력 필수'
-        }
-
-        if ((typeof(value) == 'string' && parseFloat(value) <= 0) ||
-            (typeof(value) == 'number' && value <= 0)) {
-          return 'Duration 데이타는 0 보다 커야 함'
-        }
-
-        return true
+        return checkFloat(value, 'Duration 데이타', (v) => {
+          if (v < default_values.dataDurationMin || v > default_values.dataDurationMax) {
+            return `Duration 데이타는 ${default_values.dataDurationMin} 이상 ${default_values.dataDurationMax} 이하 이어야 함`
+          }
+          return true;
+        })
       },
     },
   }),

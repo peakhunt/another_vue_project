@@ -30,7 +30,7 @@
                 <v-col cols="6" sm="6" md="6">
                   <v-text-field
                       label="데이타 전송 인터벌"
-                      hint="데이타 전송 인터벌"
+                      :hint="`데이타 전송 인터벌. ${default_values.dataIntervalMin} 이상 ${default_values.dataIntervalMax} 이하. 1000 ms = 1 초`"
                       v-model.number="dataInterval"
                       type="number"
                       :rules="[rules.dataIntervalRule]"
@@ -64,7 +64,7 @@
                 <v-col cols="6" sm="6" md="6">
                   <v-text-field
                       label="TCP 서버 포트"
-                      hint="TCP 서버 포트"
+                      :hint="`TCP 서버 포트. ${default_values.tcpServerPortMin} 보다 크고 ${default_values.tcpServerPortMax} 이하 `"
                       v-model.number="tcpServerPort"
                       type="number"
                       :rules="[rules.tcpServerPortRule]"
@@ -98,7 +98,7 @@
                 <v-col cols="6" sm="6" md="6">
                   <v-text-field
                       label="UDP 포트"
-                      hint="UDP 포트"
+                      :hint="`UDP 포트. ${default_values.udpPortMin} 보다 크고 ${default_values.udpPortMax} 이하`"
                       v-model.number="udpPortNumber"
                       type="number"
                       :rules="[rules.udpPortNumber]"
@@ -109,8 +109,8 @@
                 </v-col>
                 <v-col cols="6" sm="6" md="6">
                   <v-text-field
-                      label="UDP 전송 IP"
-                      hint="UDP 전송 IP"
+                      label="UDP 전송 IP 주소"
+                      hint="UDP 전송 IP 주소"
                       v-model="udpDestinationIP"
                       :rules="[rules.udpDestinationIP]"
                       required
@@ -139,6 +139,7 @@
 import WaveSimData from '@/components/WaveSimData.vue'
 import RandomSimData from '@/components/RandomSimData.vue'
 import { mapGetters } from 'vuex'
+import default_values from '@/utils/default_values'
 
 export default {
   name: 'Settings',
@@ -234,6 +235,7 @@ export default {
     },
   },
   data: () => ({
+    default_values,
     rules: {
       dataIntervalRule: (value) => {
         if(typeof(value) == 'string' && value ==='') {
@@ -242,8 +244,8 @@ export default {
 
         let v = value
 
-        if (v <= 100 || v > 10000) {
-            return '100 보다 크고 10000 이하 이여야 함'
+        if (v < default_values.dataIntervalMin || v > default_values.dataIntervalMax) {
+            return `${default_values.dataIntervalMin} 이상 ${default_values.dataIntervalMax} 이하 이여야 함`
         }
 
         return true
@@ -253,8 +255,8 @@ export default {
           return 'TCP 서버 포트 입력 필수'
         }
 
-        if (value <= 1024 || value > 65536) {
-          return 'TCP 서버 포트 는 1024 보다 크고 65536 이하 이여야 함'
+        if (value <= default_values.tcpServerPortMin || value > default_values.tcpServerPortMax) {
+          return `TCP 서버 포트 는 ${default_values.tcpServerPortMin} 보다 크고 ${default_values.tcpServerPortMax} 이하 이여야 함`
         }
 
         return true
@@ -264,8 +266,8 @@ export default {
           return 'UDP 서버 포트 입력 필수'
         }
 
-        if (value <= 1024 || value > 65536) {
-          return 'UDP 서버 포트 는 1024 보다 크고 65536 이하 이여야 함'
+        if (value <= default_values.udpPortMin || value > default_values.udpPortMax) {
+          return `UDP 서버 포트 는 ${default_values.udpPortMin} 보다 크고 ${default_values.udpPortMax} 이하 이여야 함`
         }
 
         return true

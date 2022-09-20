@@ -1,21 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import WaveSimulator from '@/utils/wave_simulator'
-
-const DEFAULT_TCP_SERVER_PORT = 10095;
-const DEFAULT_UDP_SERVER_PORT = 10095;
-const DEFAULT_UDP_SERVER_IP = "192.168.1.1";
-const DEFAULT_MAX_HISTORY = 64;
-
-const SimRandDataDefault = {
-  minHeight: 0.8,
-  maxHeight: 1.2,
-  minFrequency: 0.8,
-  maxFrequency: 1.2,
-  minDirection: 10,
-  maxDirection: 33,
-  changeInterval: 0.05,
-};
+import default_values from '@/utils/default_values'
 
 let wave_sim = null;
 
@@ -34,9 +20,9 @@ const store = new Vuex.Store({
       frequency: 0.0,
       direction: 0,
     },
-    heightHistory: new Array(DEFAULT_MAX_HISTORY).fill(0),
-    frequencyHistory: new Array(DEFAULT_MAX_HISTORY).fill(0),
-    directionHistory: new Array(DEFAULT_MAX_HISTORY).fill(0),
+    heightHistory: new Array(default_values.DEFAULT_MAX_HISTORY).fill(0),
+    frequencyHistory: new Array(default_values.DEFAULT_MAX_HISTORY).fill(0),
+    directionHistory: new Array(default_values.DEFAULT_MAX_HISTORY).fill(0),
 
     dataIntervalValid: true,
     tcpSettingValid: true,
@@ -55,7 +41,7 @@ const store = new Vuex.Store({
       dataInterval: 1000,
       tcpServer: {
         activated: true,
-        port: DEFAULT_TCP_SERVER_PORT,
+        port: default_values.DEFAULT_TCP_SERVER_PORT,
       },
       udpServer: {
         activated: true,
@@ -63,19 +49,19 @@ const store = new Vuex.Store({
         port: 10095,
       },
       simDataList: [
-        { height: 1.0, frequency: 4.0, direction: 60, duration: 0.05 },
-        { height: 2.0, frequency: 5.7, direction: 60, duration: 0.05 },
-        { height: 3.0, frequency: 7.1, direction: 60, duration: 0.05 },
-        { height: 5.0, frequency: 8.9, direction: 60, duration: 0.05 },
+        { height: 1.0, frequency: 4.0, direction: 60, duration: 10 },
+        { height: 2.0, frequency: 5.7, direction: 60, duration: 10 },
+        { height: 3.0, frequency: 7.1, direction: 60, duration: 10 },
+        { height: 5.0, frequency: 8.9, direction: 60, duration: 10 },
       ],
       simRandomData: {
-        minHeight: SimRandDataDefault.minHeight,
-        maxHeight: SimRandDataDefault.maxHeight,
-        minFrequency: SimRandDataDefault.minFrequency,
-        maxFrequency: SimRandDataDefault.maxFrequency,
-        minDirection: SimRandDataDefault.minDirection,
-        maxDirection: SimRandDataDefault.maxDirection,
-        changeInterval: SimRandDataDefault.changeInterval,
+        minHeight: default_values.SimRandDataDefault.minHeight,
+        maxHeight: default_values.SimRandDataDefault.maxHeight,
+        minFrequency: default_values.SimRandDataDefault.minFrequency,
+        maxFrequency: default_values.SimRandDataDefault.maxFrequency,
+        minDirection: default_values.SimRandDataDefault.minDirection,
+        maxDirection: default_values.SimRandDataDefault.maxDirection,
+        changeInterval: default_values.SimRandDataDefault.changeInterval,
       },
     },
   },
@@ -255,7 +241,7 @@ const store = new Vuex.Store({
         state.settings.tcpServer.activated = true;
       } else {
         state.settings.tcpServer.activated = false;
-        state.settings.tcpServer.port = DEFAULT_TCP_SERVER_PORT;
+        state.settings.tcpServer.port = default_values.DEFAULT_TCP_SERVER_PORT;
       }
     },
     setTcpServerPort(state, v) {
@@ -275,8 +261,8 @@ const store = new Vuex.Store({
         state.settings.udpServer.activated = true;
       } else {
         state.settings.udpServer.activated = false;
-        state.settings.udpServer.port = DEFAULT_UDP_SERVER_PORT;
-        state.settings.udpServer.ip = DEFAULT_UDP_SERVER_IP;
+        state.settings.udpServer.port = default_values.DEFAULT_UDP_SERVER_PORT;
+        state.settings.udpServer.ip = default_values.DEFAULT_UDP_SERVER_IP;
       }
     },
     setRandomDataValid(state, v) {
@@ -327,9 +313,9 @@ const store = new Vuex.Store({
       state.currentValue.frequency = 0;
       state.currentValue.direction = 0;
 
-      state.heightHistory = new Array(DEFAULT_MAX_HISTORY).fill(0);
-      state.frequencyHistory = new Array(DEFAULT_MAX_HISTORY).fill(0);
-      state.directionHistory = new Array(DEFAULT_MAX_HISTORY).fill(0);
+      state.heightHistory = new Array(default_values.DEFAULT_MAX_HISTORY).fill(0);
+      state.frequencyHistory = new Array(default_values.DEFAULT_MAX_HISTORY).fill(0);
+      state.directionHistory = new Array(default_values.DEFAULT_MAX_HISTORY).fill(0);
 
       state.numTCPClients = 0;
       state.tcpTxCount = 0;
@@ -346,15 +332,15 @@ const store = new Vuex.Store({
       state.frequencyHistory.push(frequency);
       state.directionHistory.push(direction);
 
-      if(state.heightHistory.length > DEFAULT_MAX_HISTORY) {
+      if(state.heightHistory.length > default_values.DEFAULT_MAX_HISTORY) {
         state.heightHistory.shift();
       }
 
-      if(state.frequencyHistory.length > DEFAULT_MAX_HISTORY) {
+      if(state.frequencyHistory.length > default_values.DEFAULT_MAX_HISTORY) {
         state.frequencyHistory.shift();
       }
 
-      if(state.directionHistory.length > DEFAULT_MAX_HISTORY) {
+      if(state.directionHistory.length > default_values.DEFAULT_MAX_HISTORY) {
         state.directionHistory.shift();
       }
     },

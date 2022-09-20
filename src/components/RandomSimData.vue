@@ -12,7 +12,7 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="최처 파고"
-              hint="최저 파고 데이타"
+              :hint="`최저 파고 데이타. ${default_values.waveHeightMin} 이상 ${default_values.waveHeightMax} 이하`"
               v-model.number="minHeight"
               type="number"
               :rules="[rules.minHeightRule]"
@@ -25,7 +25,7 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="최고 파고"
-              hint="최고 파고 데이타"
+              :hint="`최고 파고 데이타. ${default_values.waveHeightMin} 이상 ${default_values.waveHeightMax} 이하`"
               v-model.number="maxHeight"
               type="number"
               :rules="[rules.maxHeightRule]"
@@ -38,7 +38,7 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="최처 파주기"
-              hint="최저 파주기 데이타"
+              :hint="`최저 파주기 데이타. ${default_values.waveFrequencyMin} 이상 ${default_values.waveFrequencyMax} 이하`"
               v-model.number="minFrequency"
               type="number"
               :rules="[rules.minFrequencyRule]"
@@ -51,7 +51,7 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="최고 파주기"
-              hint="최고 파주기 데이타"
+              :hint="`최고 파주기 데이타. ${default_values.waveFrequencyMin} 이상 ${default_values.waveFrequencyMax} 이하`"
               v-model.number="maxFrequency"
               type="number"
               :rules="[rules.maxFrequencyRule]"
@@ -64,7 +64,7 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="최처 파향"
-              hint="최저 파향 데이타"
+              :hint="`최저 파향 데이타. ${default_values.waveDirectionMin} 이상 ${default_values.waveDirectionMax} 미만`"
               v-model.number="minDirection"
               type="number"
               :rules="[rules.minDirectionRule]"
@@ -77,7 +77,7 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="최고 파향"
-              hint="최고 파향 데이타"
+              :hint="`최고 파향 데이타. ${default_values.waveDirectionMin} 이상 ${default_values.waveDirectionMax} 미만`"
               v-model.number="maxDirection"
               type="number"
               :rules="[rules.maxDirectionRule]"
@@ -90,7 +90,7 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="변경 주기"
-              hint="랜덤 데이터 변경 주기"
+              :hint="`랜덤 데이터 변경 주기. {default_values.changeIntervalMin} 이상 ${default_values.changeIntervalMax} 이하. 0.1분 = 6초`"
               v-model.number="changeInterval"
               type="number"
               :rules="[rules.changeIntervalRule]"
@@ -108,6 +108,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import checkFloat from '@/utils/checkFloat'
+import default_values from '@/utils/default_values'
 
 export default {
   name: 'RandomSimData',
@@ -194,59 +195,60 @@ export default {
     },
   },
   data: () => ({
+    default_values,
     rules: {
       minHeightRule: (value) => {
         return checkFloat(value, '최저 파고', (v) => {
-          if( v < 0 || v > 20) {
-            return `최저 파고 데이타는  0 이상 20 이하 여야 함`
+          if( v < default_values.waveHeightMin || v > default_values.waveHeightMax) {
+            return `최저 파고 데이타는 ${default_values.waveHeightMin} 이상 ${default_values.waveHeightMax} 이하 여야 함`
           }
           return true
         })
       },
       maxHeightRule: (value) => {
         return checkFloat(value, '최고 파고', (v) => {
-          if (v < 0 || v > 20) {
-            return `최고 파고 데이타는  0 이상 20 이하 여야 함`
+          if (v < default_values.waveHeightMin || v > default_values.waveHeightMax) {
+            return `최고 파고 데이타는 ${default_values.waveHeightMin} 이상 ${default_values.waveHeightMax} 이하 여야 함`
           }
           return true;
         })
       },
       minFrequencyRule: (value) => {
         return checkFloat(value, '최저 파주기', (v) => {
-          if (v < 0 || v > 20) {
-            return `최저 파주기 데이타는  0 이상 20 이하 여야 함`
+          if (v < default_values.waveFrequencyMin || v > default_values.waveFrequencyMax) {
+            return `최저 파주기 데이타는 ${default_values.waveFrequencyMin} 이상 ${default_values.waveFrequencyMax} 이하 여야 함`
           }
           return true;
         })
       },
       maxFrequencyRule: (value) => {
         return checkFloat(value, '최고 파주기', (v) => {
-          if (v < 0 || v > 20) {
-            return `최고 파주기 데이타는  0 이상 20 이하 여야 함`
+          if (v < default_values.waveFrequencyMin || v > default_values.waveFrequencyMax) {
+            return `최고 파주기 데이타는 ${default_values.waveFrequencyMin} 이상 ${default_values.waveFrequencyMax} 이하 여야 함`
           }
           return true;
         })
       },
       minDirectionRule: (value) => {
         return checkFloat(value, '최저 파향', (v) => {
-          if (v < 0 || v >= 360) {
-            return `최저 파향 데이타는  0 이상 360 미만 이어야 함`
+          if (v < default_values.waveDirectionMin || v >= default_values.waveDirectionMax) {
+            return `최저 파향 데이타는 ${default_values.waveDirectionMin} 이상 ${default_values.waveDirectionMax} 미만 이어야 함`
           }
           return true;
         })
       },
       maxDirectionRule: (value) => {
         return checkFloat(value, '최고 파향', (v) => {
-          if (v < 0 || v >= 360) {
-            return `최고 파향 데이타는  0 이상 360 미만 이어야 함`
+          if (v < default_values.waveDirectionMin || v >= default_values.waveDirectionMax) {
+            return `최고 파향 데이타는 ${default_values.waveDirectionMin} 이상 ${default_values.waveDirectionMax} 미만 이어야 함`
           }
           return true;
         })
       },
       changeIntervalRule: (value) => {
         return checkFloat(value, '변경 주기', (v) => {
-          if (v < 0.01 || v > 100) {
-            return `변경 주기 데이타는  0.01 이상 100 이하 여야 함`
+          if (v < default_values.changeIntervalMin || v > default_values.changeIntervalMax) {
+            return `변경 주기 데이타는 ${default_values.changeIntervalMin} 이상 ${default_values.changeIntervalMax} 이하 여야 함`
           }
           return true;
         })

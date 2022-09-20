@@ -15,6 +15,7 @@
   "dependencies": {
     "arraybuffer-to-buffer": "^0.0.7",
     "core-js": "^3.8.3",
+    "electron-store": "^8.1.0",
     "fontsource-roboto": "^4.0.0",
     "gsap": "^3.11.1",
     "jsonfile": "^6.1.0",

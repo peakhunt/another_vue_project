@@ -4,7 +4,10 @@ import { app, protocol, BrowserWindow, ipcMain, dialog, globalShortcut } from 'e
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import jsonfile from 'jsonfile'
+import Store from 'electron-store'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+Store.initRenderer()
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
