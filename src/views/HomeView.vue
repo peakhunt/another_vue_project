@@ -15,8 +15,31 @@
             </v-list-item-content>
             <v-list-item-avatar tile size="80">
               <v-btn icon x-large>
-                <v-icon x-large v-if="!isSimRunning" @click.stop="startSimulation" :disabled="!canRunSimulation">play_circle</v-icon>
-                <v-icon x-large v-if="isSimRunning" @click.stop="stopSimulation">stop_circle</v-icon>
+                <v-tooltip bottom v-if="!isSimRunning">
+                  <template v-slot:activator="{ on, attrs }">
+                    <div v-on="on">
+                      <v-icon
+                        v-bind="attrs"
+                        x-large
+                        v-if="!isSimRunning"
+                        @click.stop="startSimulation" :disabled="!canRunSimulation">play_circle</v-icon>
+                      </div>
+                  </template>
+                  <span> {{ canRunSimulation ? '시뮬레이션 시작' : '설정에 문제가 있어 시뮬레이션을 시작할 수 없음' }}</span>
+                </v-tooltip>
+
+                <v-tooltip bottom v-if="isSimRunning">
+                  <template v-slot:activator="{ on, attrs }">
+                    <div v-on="on">
+                      <v-icon
+                        v-bind="attrs"
+                        x-large
+                        v-if="isSimRunning"
+                        @click.stop="stopSimulation">stop_circle</v-icon>
+                    </div>
+                  </template>
+                  <span>시뮬레이션 정지</span>
+                </v-tooltip>
               </v-btn>
             </v-list-item-avatar>
           </v-list-item>
@@ -36,7 +59,17 @@
               <v-list-item-subtitle></v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-avatar tile size="80">
-              <v-switch v-model="manualMode" :readonly="isSimRunning"></v-switch>
+              <v-tooltip bottom v-if="!isSimRunning">
+                <template v-slot:activator="{ on, attrs }">
+                  <div v-on="on" v-bind="attrs">
+                    <v-switch
+                      v-model="manualMode"
+                      :readonly="isSimRunning"
+                    ></v-switch>
+                  </div>
+                </template>
+                <span>{{ manualMode ? '랜덤 모드로 전환' : '매뉴얼 모드로 전환' }}</span>
+              </v-tooltip>
             </v-list-item-avatar>
           </v-list-item>
 
@@ -57,7 +90,7 @@
                  TCP 서비
               </div>
               <v-list-item-title class="text-h5 mb-1">
-                {{ isTcpServerActivated ? '활성' : '비활성' }}
+                {{ isTcpServerActivated ? ( isSimRunning ? '실행중' : '활성') : '비활성' }}
               </v-list-item-title>
               <v-list-item-subtitle>포트: {{ settingsTCPServerPort }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -77,7 +110,7 @@
                  UDP 서버
               </div>
               <v-list-item-title class="text-h5 mb-1">
-                {{ isUdpServerActivated ? '활성' : '비활성' }}
+                {{ isUdpServerActivated ? ( isSimRunning ? '실행중' : '활성') : '비활성' }}
               </v-list-item-title>
               <v-list-item-subtitle>IP/포트: {{settingsUdpServerIP}}:{{settingsUdpServerPort}}</v-list-item-subtitle>
             </v-list-item-content>

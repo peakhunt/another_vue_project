@@ -66,6 +66,7 @@
 
           <v-list-item-content>
             <v-list-item-title>설정 저장</v-list-item-title>
+            <v-list-item-subtitle v-if="!isSettingsOK" class="red--text">설정에 문제!!</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
