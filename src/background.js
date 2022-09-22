@@ -76,7 +76,7 @@ async function createWindow() {
     })
   })
 
-  ipcMain.on('openSettings', (e, args) => {
+  ipcMain.on('openSettings', (e) => {
     dialog.showOpenDialog(win, {
       title: 'Open WaveSim Settings',
       filters: [
