@@ -22,7 +22,7 @@
                         v-bind="attrs"
                         x-large
                         v-if="!isSimRunning"
-                        @click.stop="startSimulation" :disabled="!canRunSimulation">play_circle</v-icon>
+                        @click.stop="startSimulation" :disabled="!canRunSimulation">mdi-play-circle-outline</v-icon>
                       </div>
                   </template>
                   <span> {{ canRunSimulation ? '시뮬레이션 시작' : '설정에 문제가 있어 시뮬레이션을 시작할 수 없음' }}</span>
@@ -35,7 +35,7 @@
                         v-bind="attrs"
                         x-large
                         v-if="isSimRunning"
-                        @click.stop="stopSimulation">stop_circle</v-icon>
+                        @click.stop="stopSimulation">mdi-stop-circle-outline</v-icon>
                     </div>
                   </template>
                   <span>시뮬레이션 정지</span>

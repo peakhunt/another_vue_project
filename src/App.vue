@@ -20,7 +20,7 @@
           </v-list-item-subtitle>
         </v-list-item-content>
         <v-btn icon @click.stop="mini = !mini">
-          <v-icon>chevron_left</v-icon>
+          <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
       </v-list-item>
 
@@ -52,7 +52,7 @@
       <v-list expand>
         <v-list-item  @click.stop="openConfig" :disabled="isSimRunning">
           <v-list-item-icon class="my-2 align-self-center">
-            <v-icon>file_open</v-icon>
+            <v-icon>mdi-file-upload</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -61,7 +61,7 @@
         </v-list-item>
         <v-list-item  @click.stop="saveConfig" :disabled="!isSettingsOK || isSimRunning">
           <v-list-item-icon class="my-2 align-self-center">
-            <v-icon>save</v-icon>
+            <v-icon>mdi-file-download</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -140,12 +140,12 @@ export default {
 		mini: false,
 		navItems: [
       {
-        icon: 'dashboard',
+        icon: 'mdi-view-dashboard',
         title: 'Dashboard',
         to: '/',
       },
       {
-        icon: 'settings',
+        icon: 'mdi-cog',
         title: 'Settings',
         to: '/Settings',
       },

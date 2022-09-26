@@ -15,7 +15,7 @@
             <v-tooltip bottom>
               <template v-slot:activator="{on, attrs}">
                 <v-btn text icon color="red lighten-2" v-on="on" v-bind="attrs" :disabled="readonly">
-                  <v-icon x-large dark @click.stop="onNewItem()">add</v-icon>
+                  <v-icon x-large dark @click.stop="onNewItem()">mdi-plus</v-icon>
                 </v-btn>
               </template>
               <span>새로운 항목 추가</span>
@@ -34,21 +34,21 @@
         <template v-slot:[`item.actions`]="{ item }">
           <v-tooltip bottom>
             <template v-slot:activator="{on, attrs}">
-              <v-icon small v-on="on" v-bind="attrs" :disabled="isItemTop(item)||readonly" @click.stop="$store.dispatch('moveItemUp', item)">keyboard_arrow_up</v-icon>
+              <v-icon small v-on="on" v-bind="attrs" :disabled="isItemTop(item)||readonly" @click.stop="$store.dispatch('moveItemUp', item)">mdi-arrow-up</v-icon>
             </template>
             <span>위로 옮김</span>
           </v-tooltip>
 
           <v-tooltip bottom>
             <template v-slot:activator="{on, attrs}">
-              <v-icon small v-on="on" v-bind="attrs" :disabled="isItemBottom(item)||readonly" @click.stop="$store.dispatch('moveItemDown', item)">keyboard_arrow_down</v-icon>
+              <v-icon small v-on="on" v-bind="attrs" :disabled="isItemBottom(item)||readonly" @click.stop="$store.dispatch('moveItemDown', item)">mdi-arrow-down</v-icon>
             </template>
             <span>아래로 옮김</span>
           </v-tooltip>
 
           <v-tooltip bottom>
             <template v-slot:activator="{on, attrs}">
-              <v-icon small v-on="on" v-bind="attrs" :disabled="readonly" @click.stop="$store.dispatch('removeItem', item)">delete</v-icon>
+              <v-icon small v-on="on" v-bind="attrs" :disabled="readonly" @click.stop="$store.dispatch('removeItem', item)">mdi-delete</v-icon>
             </template>
             <span>삭제</span>
           </v-tooltip>
