@@ -1,0 +1,8 @@
+C:\sandbox\wpf\wavesim_test\wavesim_test\obj\Debug\wavesim_test.csproj.AssemblyReference.cache
+C:\sandbox\wpf\wavesim_test\wavesim_test\obj\Debug\wavesim_test.csproj.SuggestedBindingRedirects.cache
+C:\sandbox\wpf\wavesim_test\wavesim_test\obj\Debug\wavesim_test.csproj.CoreCompileInputs.cache
+C:\sandbox\wpf\wavesim_test\wavesim_test\bin\Debug\wavesim_test.exe.config
+C:\sandbox\wpf\wavesim_test\wavesim_test\bin\Debug\wavesim_test.exe
+C:\sandbox\wpf\wavesim_test\wavesim_test\bin\Debug\wavesim_test.pdb
+C:\sandbox\wpf\wavesim_test\wavesim_test\obj\Debug\wavesim_test.exe
+C:\sandbox\wpf\wavesim_test\wavesim_test\obj\Debug\wavesim_test.pdb
