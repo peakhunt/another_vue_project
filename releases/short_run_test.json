@@ -1,0 +1,47 @@
+{
+  "dataInterval": 1000,
+  "tcpServer": {
+    "activated": true,
+    "port": 10095
+  },
+  "udpServer": {
+    "activated": true,
+    "ip": "192.168.1.1",
+    "port": 10095
+  },
+  "simDataList": [
+    {
+      "height": 1,
+      "frequency": 4,
+      "direction": 60,
+      "duration": 0.05
+    },
+    {
+      "height": 2,
+      "frequency": 5.7,
+      "direction": 60,
+      "duration": 0.05
+    },
+    {
+      "height": 3,
+      "frequency": 7.1,
+      "direction": 60,
+      "duration": 0.05
+    },
+    {
+      "height": 5,
+      "frequency": 8.9,
+      "direction": 60,
+      "duration": 0.05
+    }
+  ],
+  "simRandomData": {
+    "minHeight": 0.8,
+    "maxHeight": 1.2,
+    "minFrequency": 0.8,
+    "maxFrequency": 1.2,
+    "minDirection": 10,
+    "maxDirection": 33,
+    "changeInterval": 0.05
+  }
+}
