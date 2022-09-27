@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, dialog, globalShortcut } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog, Menu, MenuItem } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import jsonfile from 'jsonfile'
@@ -17,7 +17,7 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 1280,
+    width: 1200,
     height: 720,
     webPreferences: {
       
@@ -28,8 +28,19 @@ async function createWindow() {
     }
   })
 
-  console.log(`production: ${process.env.NODE_ENV}`)
   if(!isDevelopment) {
+    const menu = new Menu()
+    menu.append(new MenuItem({
+      label: 'Debug',
+      submenu: [{
+        role: 'Toggle Developer Tools',
+        accelerator: 'Ctrl+Shift+I',
+        click: () => { 
+          win.webContents.openDevTools()
+        }
+      }]
+    }))
+    Menu.setApplicationMenu(menu)
     win.setMenuBarVisibility(false)
   }
 
@@ -150,9 +161,12 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+
+  /*
   globalShortcut.register("CommandOrControl+R", () => {
     // ignore
   })
+  */
 
   createWindow()
 })
