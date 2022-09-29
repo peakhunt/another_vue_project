@@ -66,7 +66,22 @@ function doRandomSim(self, cfg) {
 
   let height = getRandom(cfg.minHeight, cfg.maxHeight);
   let frequency = getRandom(cfg.minFrequency, cfg.maxFrequency);
-  let direction = getRandom(cfg.minDirection, cfg.maxDirection);
+
+  //
+  // direction needs special care.
+  //
+  let minD = cfg.minDirection;
+  let maxD = cfg.maxDirection;
+
+  if (maxD < minD) {
+    maxD = maxD + 360;
+  }
+  let direction = getRandom(minD, maxD);
+
+  if (direction >= 360) {
+    direction = direction - 360
+    direction = parseFloat(direction.toFixed(2));
+  }
 
   vuex.commit('setCurrentValue', {
     height: height,
@@ -91,8 +106,8 @@ function startRandomSimulation(self) {
     maxHeight: mh1 > mh2 ? mh1 : mh2,
     minFrequency: mf1 < mf2 ? mf1 : mf2,
     maxFrequency: mf1 > mf2 ? mf1 : mf2,
-    minDirection: md1 < md2 ? md1 : md2,
-    maxDirection: md1 > md2 ? md1 : md2,
+    minDirection: md1,
+    maxDirection: md2,
   };
 
   doRandomSim(self, cfg);
