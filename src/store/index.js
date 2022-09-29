@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import WaveSimulator from '@/utils/wave_simulator'
 import default_values from '@/utils/default_values'
+const pkg = require('../../package.json')
 
 let wave_sim = null;
 
@@ -10,7 +11,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     appName: 'WaveSim',
-    version: 'v0.2',
+    // version: 'v0.2',
+    version: 'v' + pkg.version,
 
     running: false,
     runningTime: 0,
