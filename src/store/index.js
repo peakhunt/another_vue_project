@@ -10,7 +10,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     appName: 'WaveSim',
-    version: 'v0.1',
+    version: 'v0.2',
 
     running: false,
     runningTime: 0,
