@@ -61,7 +61,7 @@
               <v-list-item-title class="text-h5 mb-1">
                 {{ manualMode ? '매뉴얼' : '랜덤' }}
               </v-list-item-title>
-              <v-list-item-subtitle></v-list-item-subtitle>
+              <v-list-item-subtitle>&nbsp;</v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-avatar tile size="80">
               <v-tooltip bottom v-if="!isSimRunning">
