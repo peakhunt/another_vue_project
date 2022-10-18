@@ -132,6 +132,25 @@ async function createWindow() {
       })
     })
   })
+
+  async function handleExportData() {
+    let { canceled, filePath } = await dialog.showSaveDialog(win, {
+      title: 'Export Simulation Data',
+        defaultPath: undefined,
+        filters: [
+          { name: 'CSV File', extensions: ['csv'] }
+        ]
+      }
+    );
+
+    if (canceled) {
+      return;
+    } else {
+      return filePath;
+    }
+  }
+
+  ipcMain.handle('dialog:exportData', handleExportData);
 }
 
 // Quit when all windows are closed.

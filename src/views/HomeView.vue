@@ -43,6 +43,11 @@
               </v-btn>
             </v-list-item-avatar>
           </v-list-item>
+          <v-card-text v-if="!isSimRunning && simDataLogLength !== 0">
+            <a href="#" class="white--text" @click.prevent="onExportData">
+              시뮬레이션 데이타 저장 ({{simDataLogLength}})
+            </a>
+          </v-card-text>
         </v-card>
       </v-col>
 
@@ -231,6 +236,8 @@ import WaveSimData from '@/components/WaveSimData.vue'
 import RandomSimData from '@/components/RandomSimData.vue'
 import LoaderDialog from '@/components/LoaderDialog.vue'
 import { mapGetters } from 'vuex'
+import {  ipcRenderer } from 'electron'
+import { createObjectCsvWriter } from 'csv-writer'
 
 export default {
   name: 'Home',
@@ -264,6 +271,8 @@ export default {
       'simDataNdx',
       'numSimDataList',
       'settingsRandChangeInterval',
+      'simDataLogLength',
+      'simDataLog',
     ]),
     tcpServerCardColor() {
       if (this.isTcpServerActivated == false) {
@@ -363,6 +372,39 @@ export default {
           self.snackbarTimeout =2000 
           self.snackbar = true
         }, 1500)
+      })
+    },
+    async onExportData() {
+      let filePath = await ipcRenderer.invoke('dialog:exportData')
+
+      if (filePath === undefined) {
+        return
+      }
+
+      let self = this
+
+      self.loaderMsg = '시뮬레이션 데이타를 저장하는 중'
+      self.loaderShow = true
+
+      let csvWriter = createObjectCsvWriter({
+        path: filePath,
+        header: [
+          { id: 'time', title: '시간' },
+          { id: 'height', title: '파고' },
+          { id: 'frequency', title: '파주기' },
+          { id: 'direction', title: '파향' },
+        ],
+      })
+
+      csvWriter.writeRecords(this.simDataLog)
+      .then(() => {
+        setTimeout(() => {
+          self.loaderShow = false
+
+          self.snackbarMsg = '시뮬레이션 데아타 저장 완료'
+          self.snackbarTimeout =2000 
+          self.snackbar = true
+        }, 1000)
       })
     },
   }

@@ -8,6 +8,37 @@ let wave_sim = null;
 
 Vue.use(Vuex)
 
+function getDateTime() {
+  let now = new Date();
+  let year = now.getFullYear();
+  let month = now.getMonth() + 1;
+  let day = now.getDate();
+  let hour = now.getHours();
+  let minute = now.getMinutes();
+  let second = now.getSeconds();
+
+  if (month.toString().length == 1) {
+    month = '0' + month;
+  }
+
+  if (day.toString().length == 1) {
+    day = '0' + day;
+  }
+
+  if (hour.toString().length == 1) {
+    hour = '0' + hour;
+  }
+  if (minute.toString().length == 1) {
+    minute = '0' + minute;
+  }
+  if (second.toString().length == 1) {
+    second = '0' + second;
+  }
+
+  var dateTime = year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+  return dateTime;
+}
+
 const store = new Vuex.Store({
   state: {
     appName: 'WaveSim',
@@ -38,6 +69,8 @@ const store = new Vuex.Store({
     settingsFileName: '',
 
     simDataNdx: 0,
+
+    simDataLog: [],
 
     settings: {
       dataInterval: 1000,
@@ -197,7 +230,13 @@ const store = new Vuex.Store({
     },
     numSimDataList(state) {
       return state.settings.simDataList.length;
-    }
+    },
+    simDataLog(state) {
+      return state.simDataLog;
+    },
+    simDataLogLength(state) {
+      return state.simDataLog.length;
+    },
   },
   mutations: {
     moveItemDown(state, item) {
@@ -324,6 +363,8 @@ const store = new Vuex.Store({
       state.udpTxCount = 0;
 
       state.simDataNdx = 0;
+
+      state.simDataLog = [];
     },
     setCurrentValue(state, { height, frequency, direction }) {
       state.currentValue.height = height;
@@ -345,6 +386,13 @@ const store = new Vuex.Store({
       if(state.directionHistory.length > default_values.DEFAULT_MAX_HISTORY) {
         state.directionHistory.shift();
       }
+
+      state.simDataLog.push({
+        time: getDateTime(),
+        frequency,
+        height,
+        direction,
+      })
     },
     setSettings(state, settings) {
       state.settings = settings;
