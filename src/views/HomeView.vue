@@ -401,8 +401,9 @@ export default {
       fontTitleSize: 32,
       fontUnitsSize: 32,
       fontValueSize: 32,
+      animation: true,
       animationOnInit: false,
-      animationDuration: 100,
+      animationDuration: 250,
     },
   }),
   methods: {
