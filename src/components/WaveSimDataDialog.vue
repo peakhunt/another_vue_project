@@ -29,13 +29,13 @@
               </v-col>
               <v-col cols="6" sm="6" md="6">
                 <v-text-field
-                  label="파주기(Hz)"
+                  label="파주기(초)"
                   :hint="`파주기 데이타. ${default_values.waveFrequencyMin} 이상 ${default_values.waveFrequencyMax} 이하`"
                   v-model.number="tempItem.frequency"
                   type="number"
                   :rules="[rules.frequencyRule]"
                   required
-                  suffix="Hz"></v-text-field>
+                  suffix="초"></v-text-field>
               </v-col>
               <v-col cols="6" sm="6" md="6">
                 <v-text-field
@@ -49,13 +49,14 @@
               </v-col>
               <v-col cols="6" sm="6" md="6">
                 <v-text-field
-                  label="Duration(분)"
-                  :hint="`Duration 데이타. ${default_values.dataDurationMin} 이상 ${default_values.dataDurationMax} 이하. 0.1분 = 6초`"
+                  label="Duration(초)"
+                  :hint="`Duration 데이타. ${default_values.dataDurationMin} 이상 ${default_values.dataDurationMax} 이하`"
                   v-model.number="tempItem.duration"
                   type="number"
                   :rules="[rules.durationRule]"
                   required
-                  suffix="분"></v-text-field>
+                  @keypress="IntegerOnly"
+                  suffix="초"></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -136,12 +137,17 @@ export default {
         })
       },
       durationRule: (value) => {
-        return checkFloat(value, 'Duration 데이타', (v) => {
-          if (v < default_values.dataDurationMin || v > default_values.dataDurationMax) {
+        if(typeof(value) == 'string' && value ==='') {
+          return 'Duration 데이타 입력 필수'
+        }
+
+        let v = value
+
+        if (v < default_values.changeIntervalMin || v > default_values.changeIntervalMax) {
             return `Duration 데이타는 ${default_values.dataDurationMin} 이상 ${default_values.dataDurationMax} 이하 이어야 함`
-          }
-          return true;
-        })
+        }
+
+        return true
       },
     },
   }),
@@ -165,6 +171,15 @@ export default {
     onClickMod() {
       // console.log(JSON.stringify(this.tempItem));
       this.$emit('mod', { old: this.item, mod: this.tempItem});
+    },
+    IntegerOnly(evt) {
+      evt = (evt) ? evt : window.event;
+      let charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+        evt.preventDefault()
+      } else {
+        return true
+      }
     },
   }
 }

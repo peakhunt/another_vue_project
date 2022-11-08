@@ -82,7 +82,7 @@
             {{ simDataNdx }}: {{currentHeight}}/{{currentFrequency}}/{{currentDirection}}
           </v-card-text>
           <v-card-text v-if="!manualMode">
-            변경 주기 : {{settingsRandChangeInterval}} 분
+            변경 주기 : {{settingsRandChangeInterval}} 초
           </v-card-text>
         </v-card>
       </v-col>
@@ -129,8 +129,8 @@
     </v-row>
 
     <v-row>
-      <v-col cols="4">
-        <v-card color="#385F73" dark rounded>
+      <v-col cols="4" class="d-flex" style="flex-direction:column">
+        <v-card color="#385F73" dark rounded class="flex-grow-1">
           <v-list-item two-line>
             <v-list-item-content>
               <div class="text-h6">
@@ -154,8 +154,8 @@
           </v-sheet>
         </v-card>
       </v-col>
-      <v-col cols="4">
-        <v-card color="#1F7087" dark rounded>
+      <v-col cols="4" class="d-flex" style="flex-direction:column">
+        <v-card color="#1F7087" dark rounded class="flex-grow-1">
           <v-list-item two-line>
             <v-list-item-content>
               <div class="text-h6">
@@ -163,7 +163,7 @@
               </div>
               <v-list-item-title class="text-h4 mb-1">
                 {{ currentFrequency }}
-                /<span class="text-h6">s</span>
+                <span class="text-h6">초</span>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -179,39 +179,58 @@
           </v-sheet>
         </v-card>
       </v-col>
-      <v-col cols="4">
-        <v-card color="#952175" dark rounded>
-          <v-list-item two-line>
-            <v-list-item-content>
-              <div class="text-h6">
-                 파향
-              </div>
-              <v-list-item-title class="text-h4 mb-1">
-                {{ currentDirection }}°
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-sheet color="transparent">
-            <v-sparkline
-              :value="directionHistory"
-              :smooth="4"
-              :gradient="['#f72047', '#ffd200', '#1feaea']"
-              :line-width="2"
-              padding="16"
-              stroke-linecap="round"
-            ></v-sparkline>
-          </v-sheet>
+      <v-col cols="4" class="d-flex" style="flex-direction:column">
+        <v-card color="#952175" dark rounded class="flex-grow-1" ref="directionCard">
+          <v-carousel v-model="directionCarousel" :height="carouselHeight"
+            show-arrows-on-hover
+            hide-delimiters>
+            <v-carousel-item>
+              <v-sheet height="100%" color="transparent">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <div class="text-h6">
+                      파향
+                    </div>
+                    <v-list-item-title class="text-h4 mb-1">
+                      {{ currentDirection }}°
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-sheet class="fill-height" color="transparent">
+                  <v-sparkline
+                    :value="directionHistory"
+                    :smooth="4"
+                    :gradient="['#f72047', '#ffd200', '#1feaea']"
+                    :line-width="2"
+                    padding="16"
+                    stroke-linecap="round"
+                  ></v-sparkline>
+                </v-sheet>
+              </v-sheet>
+            </v-carousel-item>
+            <v-carousel-item>
+              <v-container fill-height fluid v-resize="onResize">
+                <v-row align="center" justify="center">
+                  <RadialGauge v-if="directionCarousel === 1" :value="currentDirection" :options="gaugeOptions" ref="gauge"></RadialGauge>
+                </v-row>
+              </v-container>
+            </v-carousel-item>
+          </v-carousel>
         </v-card>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12" md="12" v-if="manualMode">
-        <WaveSimData :readonly="true"/>
+        <v-expand-transition>
+          <WaveSimData :readonly="true"/>
+        </v-expand-transition>
       </v-col>
 
       <v-col cols="12" md="12" v-if="!manualMode">
-        <RandomSimData :readonly="true" />
+        <v-expand-transition>
+          <RandomSimData :readonly="true" />
+        </v-expand-transition>
       </v-col>
     </v-row>
     <LoaderDialog :value="loaderShow" :msg="loaderMsg" />
@@ -238,6 +257,7 @@ import LoaderDialog from '@/components/LoaderDialog.vue'
 import { mapGetters } from 'vuex'
 import {  ipcRenderer } from 'electron'
 import { createObjectCsvWriter } from 'csv-writer'
+import RadialGauge from 'vue2-canvas-gauges/src/RadialGauge'
 
 export default {
   name: 'Home',
@@ -245,6 +265,7 @@ export default {
     WaveSimData,
     RandomSimData,
     LoaderDialog,
+    RadialGauge,
   },
   computed: {
     ...mapGetters([
@@ -334,6 +355,55 @@ export default {
     snackbar: false,
     snackbarMsg: '',
     snackbarTimeout: -1,
+    directionCarousel: 0,
+    carouselHeight: 180,
+    gaugeBugCount: 0,
+    gaugeOptions: {
+      height: 180,
+      width: 180,
+      title: '파향',
+      units: '°',
+      minValue: 0,
+      maxValue: 360,
+      majorTicks: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'],
+      minorTicks: 22,
+      ticksAngle: 360,
+      startAngle: 180,
+      strokeTicks: false,
+      highlights: false,
+      colorPlate: '#33a',
+      colorMajorTicks: '#f5f5f5',
+      colorMinorTicks: '#ddd',
+      colorNumbers: '#ccc',
+      colorNeedle: 'rgba(240, 64, 64, 1)',
+      colorNeedleEnd: 'rgba(255, 32, 32, .9)',
+      colorTitle: '#ffffff',
+      colorUnits: '#ffffff',
+      valueBox: true,
+      valueTextShadow: false,
+      needleCircleSize: 5,
+      needleCircleOuter: false,
+      needleCircleInner: true,
+      animationRule: 'linear',
+      needleType: 'line',
+      needleStart: 75,
+      needleEnd: 99,
+      needleWidth: 3,
+      borders: true,
+      borderInnerWidth: 0,
+      borderMiddleWidth: 0,
+      borderOuterWidth: 8,
+      colorBorderOuter: '#ccc',
+      colorNeedleShadowDown: '#222',
+      borderShadowWidth: 0,
+      animationTarget: 'plate',
+      useMinPath: true,
+      fontTitleSize: 32,
+      fontUnitsSize: 32,
+      fontValueSize: 32,
+      animationOnInit: false,
+      animationDuration: 100,
+    },
   }),
   methods: {
     startSimulation() {
@@ -341,6 +411,8 @@ export default {
 
       self.loaderMsg = '시뮬레이션을 시작하는 중'
       self.loaderShow = true
+
+      self.gaugeBugCount = 0
 
       self.$store.dispatch('startSimulation', (err) => {
         setTimeout(() => {
@@ -407,6 +479,44 @@ export default {
         }, 1000)
       })
     },
+    onResize() {
+      // console.log(`onResize(), ${(new Date()).toLocaleString()}`)
+      let self = this
+
+      let newOpt = JSON.parse(JSON.stringify(self.gaugeOptions))
+      newOpt.height = self.$refs.directionCard.$el.clientHeight
+      newOpt.width = newOpt.height
+      self.carouselHeight = newOpt.height 
+
+      // this will trigger gauge destroy and new creation
+      self.gaugeOptions = newOpt
+
+      self.gaugeBugCount = 0
+    },
+  },
+  watch: {
+    directionCarousel(newVal, oldVal) {
+      let self = this
+
+      if (oldVal === 0 && newVal === 1) {
+        self.onResize();
+      }
+    },
+    currentDirection() {
+      //
+      // XXX
+      // canvas-gauge bug workaround!!!
+      //
+      let self = this
+
+      self.gaugeBugCount += 1
+      if (self.gaugeBugCount > 100) {
+        // self.onResize();
+        self.$refs.gauge.chart.canvas.redraw()
+        // console.log(`canvas-gauge bug workaround ${self.gaugeOptions.animationTarget}`)
+        self.gaugeBugCount = 0
+      }
+    }
   }
 }
 </script>

@@ -90,12 +90,13 @@
           <v-col cols="6" sm="6" md="6">
             <v-text-field
               label="변경 주기"
-              :hint="`랜덤 데이터 변경 주기. {default_values.changeIntervalMin} 이상 ${default_values.changeIntervalMax} 이하. 0.1분 = 6초`"
+              :hint="`랜덤 데이터 변경 주기. ${default_values.changeIntervalMin} 이상 ${default_values.changeIntervalMax}`"
               v-model.number="changeInterval"
               type="number"
               :rules="[rules.changeIntervalRule]"
-              suffix="분"
+              suffix="초"
               required
+              @keypress="IntegerOnly"
               :readonly="readonly"
             />
           </v-col>
@@ -246,16 +247,30 @@ export default {
         })
       },
       changeIntervalRule: (value) => {
-        return checkFloat(value, '변경 주기', (v) => {
-          if (v < default_values.changeIntervalMin || v > default_values.changeIntervalMax) {
-            return `변경 주기 데이타는 ${default_values.changeIntervalMin} 이상 ${default_values.changeIntervalMax} 이하 여야 함`
-          }
-          return true;
-        })
+        if(typeof(value) == 'string' && value ==='') {
+          return '변경 주기 입력 필수'
+        }
+
+        let v = value
+
+        if (v < default_values.changeIntervalMin || v > default_values.changeIntervalMax) {
+          return `변경 주기 데이타는 ${default_values.changeIntervalMin} 이상 ${default_values.changeIntervalMax} 이하 여야 함`
+        }
+
+        return true
       },
     },
   }),
   methods: {
+    IntegerOnly(evt) {
+      evt = (evt) ? evt : window.event;
+      let charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+        evt.preventDefault()
+      } else {
+        return true
+      }
+    },
   },
   mounted() {
     this.$refs.form1.validate();

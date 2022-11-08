@@ -35,7 +35,7 @@ function executeCurrentManualItem(self) {
   let ndx = vuex.getters.simDataNdx;
   let simItem = simDataList[ndx];
 
-  let delay = simItem.duration * 60 * 1000;   // minute -> ms
+  let delay = simItem.duration * 1000;   // second -> ms
 
   vuex.commit('setCurrentValue', {
     height: simItem.height,
@@ -99,7 +99,7 @@ function startRandomSimulation(self) {
   let md1 = vuex.getters.settingsRandMinDirection;
   let md2 = vuex.getters.settingsRandMaxDirection;
 
-  let delay = vuex.getters.settingsRandChangeInterval * 60 * 1000;   // minute -> ms
+  let delay = vuex.getters.settingsRandChangeInterval * 1000;   // second -> ms
 
   let cfg = {
     minHeight: mh1 < mh2 ? mh1 : mh2,

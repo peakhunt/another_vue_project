@@ -67,10 +67,10 @@ const defaults = {
   waveFrequencyMax: 20,
   waveDirectionMin: 0,
   waveDirectionMax: 360,
-  changeIntervalMin: 0.05,
-  changeIntervalMax: 100,
-  dataDurationMin: 0.05,
-  dataDurationMax: 100,
+  changeIntervalMin: 1,
+  changeIntervalMax: 9999,
+  dataDurationMin: 1,
+  dataDurationMax: 9999,
 };
 
 module.exports = defaults;

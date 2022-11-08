@@ -100,7 +100,7 @@ export default {
       },
       {
         sortable: false,
-        text: '파주기 (per sec)',
+        text: '파주기 (초)',
         value: 'frequency',
       },
       {
@@ -110,7 +110,7 @@ export default {
       },
       {
         sortable: false,
-        text: 'Duration (minutes)',
+        text: 'Duration (초)',
         value: 'duration',
       },
       {
