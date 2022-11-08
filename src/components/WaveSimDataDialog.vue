@@ -103,13 +103,13 @@ export default {
       height: 0,
       frequency: 0,
       direction: 0,
-      duration: 5,
+      duration: 600,
     },
     tempItem: {
       height: 0,
       frequency: 0,
       direction: 0,
-      duration: 5,
+      duration: 600,
     },
     rules: {
       heightRule: (value) => {

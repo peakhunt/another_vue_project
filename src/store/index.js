@@ -84,10 +84,10 @@ const store = new Vuex.Store({
         port: 10095,
       },
       simDataList: [
-        { height: 1.0, frequency: 4.0, direction: 60, duration: 10 },
-        { height: 2.0, frequency: 5.7, direction: 60, duration: 10 },
-        { height: 3.0, frequency: 7.1, direction: 60, duration: 10 },
-        { height: 5.0, frequency: 8.9, direction: 60, duration: 10 },
+        { height: 1.0, frequency: 4.0, direction: 60, duration: 600 },
+        { height: 2.0, frequency: 5.7, direction: 60, duration: 600 },
+        { height: 3.0, frequency: 7.1, direction: 60, duration: 600 },
+        { height: 5.0, frequency: 8.9, direction: 60, duration: 600 },
       ],
       simRandomData: {
         minHeight: default_values.SimRandDataDefault.minHeight,

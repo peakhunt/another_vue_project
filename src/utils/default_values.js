@@ -53,7 +53,7 @@ const defaults = {
     maxFrequency: 1.2,
     minDirection: 10,
     maxDirection: 33,
-    changeInterval: 1,
+    changeInterval: 60,
   },
   dataIntervalMin: 100,
   dataIntervalMax: 10000,
