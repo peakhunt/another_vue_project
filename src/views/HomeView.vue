@@ -511,8 +511,7 @@ export default {
       let self = this
 
       self.gaugeBugCount += 1
-      if (self.gaugeBugCount > 100) {
-        // self.onResize();
+      if (self.gaugeBugCount > 80) {
         self.$refs.gauge.chart.canvas.redraw()
         // console.log(`canvas-gauge bug workaround ${self.gaugeOptions.animationTarget}`)
         self.gaugeBugCount = 0
