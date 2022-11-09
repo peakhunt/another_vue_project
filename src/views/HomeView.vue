@@ -503,6 +503,7 @@ export default {
         self.onResize();
       }
     },
+    /*
     currentDirection() {
       //
       // XXX
@@ -517,6 +518,7 @@ export default {
         self.gaugeBugCount = 0
       }
     }
+    */
   }
 }
 </script>
