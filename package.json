@@ -1,6 +1,6 @@
 {
   "name": "wavesim",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -60,6 +60,7 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
+    "ignorePatterns": ["gauge.min.*"],
     "rules": {
       "vue/multi-word-component-names": 0
     }
