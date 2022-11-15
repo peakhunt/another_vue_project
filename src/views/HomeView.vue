@@ -293,7 +293,6 @@ export default {
       'numSimDataList',
       'settingsRandChangeInterval',
       'simDataLogLength',
-      'simDataLog',
     ]),
     tcpServerCardColor() {
       if (this.isTcpServerActivated == false) {
@@ -469,7 +468,22 @@ export default {
         ],
       })
 
-      csvWriter.writeRecords(this.simDataLog)
+      let keys = Object.keys(localStorage);
+      keys.sort();
+      let values = [];
+      let i;
+
+      for(i = 0; i < keys.length; i++) {
+        let item = JSON.parse(localStorage.getItem(keys[i]));
+        values.push({
+          time: keys[i],
+          height: item.height,
+          frequency: item.frequency,
+          direction: item.direction,
+        });
+      }
+
+      csvWriter.writeRecords(values)
       .then(() => {
         setTimeout(() => {
           self.loaderShow = false
@@ -503,6 +517,7 @@ export default {
         self.onResize();
       }
     },
+    /*
     currentDirection() {
       //
       // XXX
@@ -517,6 +532,7 @@ export default {
         self.gaugeBugCount = 0
       }
     }
+    */
   }
 }
 </script>

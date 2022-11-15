@@ -70,7 +70,7 @@ const store = new Vuex.Store({
 
     simDataNdx: 0,
 
-    simDataLog: [],
+    simDataLength: 0,
 
     settings: {
       dataInterval: 1000,
@@ -231,11 +231,8 @@ const store = new Vuex.Store({
     numSimDataList(state) {
       return state.settings.simDataList.length;
     },
-    simDataLog(state) {
-      return state.simDataLog;
-    },
     simDataLogLength(state) {
-      return state.simDataLog.length;
+      return state.simDataLength;
     },
   },
   mutations: {
@@ -364,7 +361,8 @@ const store = new Vuex.Store({
 
       state.simDataNdx = 0;
 
-      state.simDataLog = [];
+      localStorage.clear();
+      state.simDataLength = 0;
     },
     setCurrentValue(state, { height, frequency, direction }) {
       state.currentValue.height = height;
@@ -387,12 +385,14 @@ const store = new Vuex.Store({
         state.directionHistory.shift();
       }
 
-      state.simDataLog.push({
-        time: getDateTime(),
+      let time = getDateTime();
+      let val = {
         frequency,
         height,
         direction,
-      })
+      }
+      localStorage.setItem(time, JSON.stringify(val))
+      state.simDataLength += 1;
     },
     setSettings(state, settings) {
       state.settings = settings;
